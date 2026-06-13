@@ -1,0 +1,33 @@
+name: Pulse Morning Run
+
+on:
+  schedule:
+    - cron: "30 2 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  run-pulse:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Pulse
+        env:
+          OPENWEATHER_API: ${{ secrets.OPENWEATHER_API }}
+          CITY: ${{ secrets.CITY }}
+        run: |
+          python main.py
